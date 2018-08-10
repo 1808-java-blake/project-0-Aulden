@@ -37,17 +37,8 @@ public class DepositScreen implements Screen{
 			String dep = scan.nextLine();
 			try {
 				Account a = ad.findByAccountId(Integer.parseInt(in));
-				
-				if(Integer.parseInt(dep)<0) {
-					System.out.println("Nice try, no negative deposits");
-					continue;
-				}
-				int bal = a.getBalance();
-				bal += Integer.parseInt(dep);
-				a.setBalance(bal);
-				a.addTransactHistory("Deposited $" + dep);
+				a.deposit(Integer.parseInt(dep));
 				ad.updateAccount(a);
-				System.out.println("Deposit successful! New balance: $" + a.getBalance());
 			}
 			catch(Exception ex) {
 				System.out.println("Error: Please try again");

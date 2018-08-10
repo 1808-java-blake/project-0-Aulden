@@ -37,6 +37,7 @@ public class HomeScreen implements Screen {
 		case "8":
 			return new DeleteAccountScreen();
 		case "9":
+			System.out.println("Goodbye!");
 			System.exit(1);
 			break;
 		default:

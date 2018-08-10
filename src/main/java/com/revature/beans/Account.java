@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.revature.daos.AccountDao;
+import com.revature.daos.UserDao;
+
 public class Account implements Serializable{
 	/**
 	 * 
@@ -58,6 +61,33 @@ public class Account implements Serializable{
 	}
 	public void setBalance(int balance) {
 		this.balance = balance;
+	}
+	public boolean deposit(int amt) {
+		if(amt<0) {
+			System.out.println("Negative deposits not allowed");
+			return false;
+		}
+		
+		this.balance += amt;
+		this.addTransactHistory("Deposited $" + amt);
+		System.out.println("Deposit successful! New balance: $" + this.balance);
+		return true;
+	}
+	public boolean withdraw(int amt) {
+		if(amt<0) {
+			System.out.println("Negative withdrawals not allowed");
+			return false;
+		}
+		else if(this.balance - amt < 0) {
+			System.out.println("Cannot withdraw more than account balance");
+			return false;
+		}
+		
+		this.balance -= amt;
+		this.addTransactHistory("Withdrew $" + amt);
+		System.out.println("Withdrawal successful! New balance: $" + this.balance);
+		
+		return true;
 	}
 	public Account(int id, int balance) {
 		super();

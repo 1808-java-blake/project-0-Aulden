@@ -37,28 +37,12 @@ public class WithdrawalScreen implements Screen{
 			String withdrawal = scan.nextLine();
 			try {
 				Account a = ad.findByAccountId(Integer.parseInt(in));
-				int bal = a.getBalance();
-				
-				if(Integer.parseInt(withdrawal)<0) {
-					System.out.println("No negative withdrawals, please");
-					continue;
-				}
-
-				bal -= Integer.parseInt(withdrawal);
-				
-				if(bal<0) {
-					System.out.println("Nice try, no negative balances allowed");
-					System.out.println();
-					continue;
-				}
-				
-				a.setBalance(bal);
-				a.addTransactHistory("Withdrew $" + withdrawal);
+				a.withdraw(Integer.parseInt(withdrawal));
 				ad.updateAccount(a);
-				System.out.println("Deposit successful! New balance: $" + a.getBalance());
 			}
 			catch(Exception ex) {
 				System.out.println("Error: Please try again");
+				ex.printStackTrace();
 			}
 		}
 		else{
