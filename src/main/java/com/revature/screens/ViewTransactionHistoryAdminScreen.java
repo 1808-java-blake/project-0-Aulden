@@ -16,7 +16,7 @@ public class ViewTransactionHistoryAdminScreen implements Screen{
 		User user = ud.findByUsernameAndPassword(CurrentUser.username, CurrentUser.password);
 		
 		System.out.println("Big Bank Find User's Transaction History");
-		System.out.println("-----------------------------");
+		System.out.println("-----------------------------------------");
 		
 		if(!user.isAdmin()) {
 			System.out.println("You're no admin... get out of here!");
