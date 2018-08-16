@@ -1,6 +1,6 @@
 package com.revature.beans;
 
-public class CurrentUser extends User{
+public final class CurrentUser extends User{
 	/**
 	 * 
 	 */

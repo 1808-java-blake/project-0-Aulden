@@ -101,4 +101,7 @@ public class Account implements Serializable{
 		this.balance = 0;
 		// TODO Auto-generated constructor stub
 	}
+	public void setTransactHistory(List<String> li) {
+		this.transactHistory = li;
+	}
 }

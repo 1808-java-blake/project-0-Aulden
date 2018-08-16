@@ -3,7 +3,7 @@ package com.revature.daos;
 import com.revature.beans.Account;
 
 public interface AccountDao {
-public static final AccountDao currentAccountDao = new AccountSerializer();
+public static final AccountDao currentAccountDao = new AccountToDatabase();
 	
 	void createAccount(Account a);
 	Account findByAccountId(int accountId);

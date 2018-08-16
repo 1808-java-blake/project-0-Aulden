@@ -35,6 +35,10 @@ public class RegisterUserScreen implements Screen {
 			u.setAdmin(false);
 		}
 		
+		if(ud.findByUsername(u.getUsername()) != null) {
+			return new LoginScreen();
+		}
+		
 		//create account
 		Account a = new Account();
 		ad.createAccount(a);

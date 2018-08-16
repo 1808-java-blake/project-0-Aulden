@@ -26,6 +26,10 @@ public class User implements Serializable {
 		accountIds.add(id);
 	}
 	
+	public void setAccountIds(List<Integer> li) {
+		this.accountIds = li;
+	}
+	
 	
 
 	private boolean isAdmin;
@@ -43,6 +47,7 @@ public class User implements Serializable {
 
 	public User() {
 		super();
+		this.username = "default";
 	}
 
 	public User(String username, String password, String firstName, String lastName, int age) {
