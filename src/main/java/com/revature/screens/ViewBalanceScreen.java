@@ -2,6 +2,8 @@ package com.revature.screens;
 
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.revature.beans.CurrentUser;
 import com.revature.beans.User;
 import com.revature.daos.AccountDao;
@@ -11,6 +13,7 @@ public class ViewBalanceScreen implements Screen{
 	private UserDao ud = UserDao.currentUserDao;
 	private AccountDao ad = AccountDao.currentAccountDao;
 	private Scanner scan = new Scanner(System.in);
+	private Logger log = Logger.getRootLogger();
 	
 	public Screen start() {
 		User user = ud.findByUsernameAndPassword(CurrentUser.username, CurrentUser.password);
@@ -26,6 +29,7 @@ public class ViewBalanceScreen implements Screen{
 		System.out.println("Hit enter to continue...");
 		scan.nextLine();
 		
+		log.info(CurrentUser.username + " entered Home screen");
 		return new HomeScreen();
 	}
 	

@@ -1,0 +1,20 @@
+2018-08-17 10:44:44 INFO  LoginScreen:21 - User entered Register Screen
+2018-08-17 10:44:46 TRACE RegisterUserScreen:23 - Username entered
+2018-08-17 10:44:47 TRACE RegisterUserScreen:26 - Password entered
+2018-08-17 10:44:48 TRACE RegisterUserScreen:29 - First name entered
+2018-08-17 10:44:49 TRACE RegisterUserScreen:32 - Last name entered
+2018-08-17 10:44:55 TRACE RegisterUserScreen:35 - Age entered
+2018-08-17 10:44:56 TRACE RegisterUserScreen:38 - Admin status entered
+2018-08-17 10:44:56 DEBUG RegisterUserScreen:57 - Account 34484 created successfully
+2018-08-17 10:44:56 DEBUG RegisterUserScreen:62 - User j created successfully
+2018-08-17 10:44:56 INFO  RegisterUserScreen:69 - User entered Login screen
+2018-08-17 10:45:04 INFO  HomeScreen:44 - j entered Facts screen
+2018-08-17 10:45:38 INFO  HomeScreen:53 - j exited the application
+2018-08-17 10:59:14 INFO  HomeScreen:35 - j entered View Balance screen
+2018-08-17 10:59:18 INFO  ViewBalanceScreen:32 - j entered Home screen
+2018-08-17 10:59:26 INFO  HomeScreen:41 - j entered Admin screen
+2018-08-17 10:59:26 INFO  ViewTransactionHistoryAdminScreen:25 - Non-admin j attempted to use admin screen
+2018-08-17 10:59:26 INFO  ViewTransactionHistoryAdminScreen:30 - j entered Home screen
+2018-08-17 10:59:47 INFO  HomeScreen:38 - j entered View Transaction History screen
+2018-08-17 10:59:48 INFO  ViewTransactionHistoryScreen:32 - j entered Home screen
+2018-08-17 10:59:50 INFO  HomeScreen:53 - j exited the application

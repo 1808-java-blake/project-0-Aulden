@@ -2,6 +2,8 @@ package com.revature.screens;
 
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.revature.beans.CurrentUser;
 import com.revature.beans.User;
 import com.revature.beans.Account;
@@ -13,6 +15,7 @@ public class WithdrawalScreen implements Screen{
 	private UserDao ud = UserDao.currentUserDao;
 	private AccountDao ad = AccountDao.currentAccountDao;
 	private User u = ud.findByUsernameAndPassword(CurrentUser.username, CurrentUser.password);
+	private Logger log = Logger.getRootLogger();
 	
 	public Screen start() {
 		
@@ -31,6 +34,7 @@ public class WithdrawalScreen implements Screen{
 		String in = scan.nextLine();
 		
 		if("exit".equalsIgnoreCase(in)) {
+			log.info(u.getUsername() + " exited Withdrawal screen");
 			break;
 		}
 		else if(u.getAccountIds().contains(Integer.parseInt(in))){
@@ -39,19 +43,24 @@ public class WithdrawalScreen implements Screen{
 			try {
 				Account a = ad.findByAccountId(Integer.parseInt(in));
 				a.withdraw(Integer.parseInt(withdrawal));
+				log.info("Successfully withdrew $" + Integer.parseInt(withdrawal));
 				ad.updateAccount(a);
+				log.info("Updated " + a.getId() + " successfully");
 			}
 			catch(Exception ex) {
+				log.debug("Error occurred");
 				System.out.println("Error: Please try again");
 				ex.printStackTrace();
 			}
 		}
 		else{
+			log.info("Invalid input");
 			System.out.println("Invalid input, please try again");
 		}
 		
 	}
 		
+		log.info(u.getUsername() + " entered Home screen");
 		return new HomeScreen();
 		
 	}
