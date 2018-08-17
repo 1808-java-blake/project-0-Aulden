@@ -18,3 +18,41 @@
 2018-08-17 10:59:47 INFO  HomeScreen:38 - j entered View Transaction History screen
 2018-08-17 10:59:48 INFO  ViewTransactionHistoryScreen:32 - j entered Home screen
 2018-08-17 10:59:50 INFO  HomeScreen:53 - j exited the application
+2018-08-17 14:41:05 INFO  LoginScreen:21 - User entered Register Screen
+2018-08-17 14:41:06 TRACE RegisterUserScreen:23 - Username entered
+2018-08-17 14:41:09 TRACE RegisterUserScreen:26 - Password entered
+2018-08-17 14:41:15 TRACE RegisterUserScreen:29 - First name entered
+2018-08-17 14:41:17 TRACE RegisterUserScreen:32 - Last name entered
+2018-08-17 14:41:18 TRACE RegisterUserScreen:35 - Age entered
+2018-08-17 14:41:19 TRACE RegisterUserScreen:38 - Admin status entered
+2018-08-17 14:41:19 DEBUG RegisterUserScreen:57 - Account 48442 created successfully
+2018-08-17 14:41:20 DEBUG RegisterUserScreen:62 - User frank created successfully
+2018-08-17 14:41:20 INFO  RegisterUserScreen:69 - User entered Login screen
+2018-08-17 14:41:55 INFO  LoginScreen:21 - User entered Register Screen
+2018-08-17 14:42:05 TRACE RegisterUserScreen:23 - Username entered
+2018-08-17 14:42:06 TRACE RegisterUserScreen:26 - Password entered
+2018-08-17 14:42:08 TRACE RegisterUserScreen:29 - First name entered
+2018-08-17 14:42:08 TRACE RegisterUserScreen:32 - Last name entered
+2018-08-17 14:42:09 TRACE RegisterUserScreen:35 - Age entered
+2018-08-17 14:42:10 TRACE RegisterUserScreen:38 - Admin status entered
+2018-08-17 14:42:12 DEBUG RegisterUserScreen:57 - Account 76668 created successfully
+2018-08-17 14:42:12 DEBUG RegisterUserScreen:62 - User frank created successfully
+2018-08-17 14:42:12 INFO  RegisterUserScreen:69 - User entered Login screen
+2018-08-17 14:42:23 INFO  HomeScreen:29 - frank entered Deposit screen
+2018-08-17 14:42:29 DEBUG DepositScreen:46 - $500 deposited to 76668 successfully
+2018-08-17 14:42:30 DEBUG DepositScreen:48 - Account 76668 updated successfully
+2018-08-17 14:42:32 INFO  DepositScreen:37 - frank exited Deposit screen
+2018-08-17 14:42:47 INFO  HomeScreen:47 - frank entered Create Account screen
+2018-08-17 14:42:51 DEBUG CreateAccountScreen:42 - New account 50659 created successfully
+2018-08-17 14:42:52 DEBUG CreateAccountScreen:45 - User frank updated successfully
+2018-08-17 14:43:00 TRACE CreateAccountScreen:36 - frank exited Create Account
+2018-08-17 14:43:08 INFO  HomeScreen:50 - frank entered Delete Account screen
+2018-08-17 14:43:13 DEBUG DeleteAccountScreen:41 - Account 76668 deleted successfully
+2018-08-17 14:43:14 DEBUG DeleteAccountScreen:43 - User frank deleted successfully
+2018-08-17 14:43:16 INFO  DeleteAccountScreen:35 - frank exited Delete Account screen
+2018-08-17 14:43:20 INFO  HomeScreen:41 - frank entered Admin screen
+2018-08-17 14:43:21 INFO  ViewTransactionHistoryAdminScreen:25 - Non-admin frank attempted to use admin screen
+2018-08-17 14:43:21 INFO  ViewTransactionHistoryAdminScreen:30 - frank entered Home screen
+2018-08-17 14:43:23 INFO  HomeScreen:38 - frank entered View Transaction History screen
+2018-08-17 14:43:28 INFO  ViewTransactionHistoryScreen:32 - frank entered Home screen
+2018-08-17 14:43:30 INFO  HomeScreen:53 - frank exited the application
