@@ -8,6 +8,7 @@ public class FactsScreen implements Screen{
 	private Scanner scan = new Scanner(System.in);
 	
 	public Screen start() {
+		System.out.println();
 		System.out.println("Big Bank Facts");
 		System.out.println("---------------");
 		System.out.println("#1 Bank in Existence...Fact");

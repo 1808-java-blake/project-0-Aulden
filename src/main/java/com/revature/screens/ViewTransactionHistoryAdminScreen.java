@@ -27,6 +27,9 @@ public class ViewTransactionHistoryAdminScreen implements Screen{
 		}
 		
 		while(true) {
+			System.out.println();
+			System.out.println("Big Bank Admin Screen");
+			System.out.println("----------------------");
 			System.out.println("Enter a username to see their accounts' transaction history, or exit to return");
 			String un = scan.nextLine();
 			

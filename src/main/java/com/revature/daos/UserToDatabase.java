@@ -1,30 +1,42 @@
 package com.revature.daos;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import com.revature.beans.User;
 import com.revature.utilities.DatabaseManager;
 
 public class UserToDatabase implements UserDao {
+	private Connection c = null;
+	private PreparedStatement stmt = null;
 	
 	public void createUser(User u) {
 		if (u == null) {
 			return;
 		}
 		
-		Connection c = DatabaseManager.getConnection();
-		Statement stmt = null;
+		c = DatabaseManager.getConnection();
 		
 		try {
-			stmt = c.createStatement();
-			stmt.executeUpdate(String.format("INSERT INTO users VALUES ('%s', '%s', '%s', '%s', %d, %b);", u.getUsername(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getAge(), u.isAdmin()));
+			stmt = c.prepareStatement("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?);");
+			stmt.setString(1, u.getUsername());
+			stmt.setString(2, u.getPassword());
+			stmt.setString(3, u.getFirstName());
+			stmt.setString(4, u.getLastName());
+			stmt.setInt(5, u.getAge());
+			stmt.setBoolean(6, u.isAdmin());
+			
+			stmt.executeUpdate();
 		
 			for(int id : u.getAccountIds()) {
-				stmt.executeUpdate(String.format("INSERT INTO hasaccounts SELECT '%s', %d WHERE NOT EXISTS (SELECT id FROM hasaccounts WHERE id = %d);", u.getUsername(), id, id));
+				stmt = c.prepareStatement("INSERT INTO hasaccounts SELECT ?, ? WHERE NOT EXISTS (SELECT id FROM hasaccounts WHERE id = ?);");
+				stmt.setString(1, u.getUsername());
+				stmt.setInt(2, id);
+				stmt.setInt(3, id);
+				stmt.executeUpdate();
 			}
 		}
 		catch(SQLException ex) {
@@ -32,6 +44,9 @@ public class UserToDatabase implements UserDao {
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
+		}
+		finally {
+			closeResources();
 		}
 		
 	}
@@ -42,26 +57,28 @@ public class UserToDatabase implements UserDao {
 			return null;
 		}
 		
-		Connection c = DatabaseManager.getConnection();
-		Statement stmt = null;
-		Statement stmt2 = null;
+		c = DatabaseManager.getConnection();
 		ResultSet rs = null;
 		ResultSet rs2 = null;
 		User u = new User();
 		
 		try {
-			stmt = c.createStatement();
-			rs = stmt.executeQuery(String.format("SELECT * FROM users WHERE username = '%s' AND password = '%s'", username, password));
+			stmt = c.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?");
+			stmt.setString(1, username);
+			stmt.setString(2, password);
+			
+			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
 				u = new User(rs.getString("username"), rs.getString("password"), rs.getString("firstname"), rs.getString("lastname"), rs.getInt("age"), rs.getBoolean("admin"));
 			}
 			
-			stmt2 = c.createStatement();
 			if("default".equals(u.getUsername())) {
 				return null;
 			}
-			rs2 = stmt2.executeQuery(String.format("SELECT id FROM hasaccounts WHERE username = '%s'", u.getUsername()));
+			stmt = c.prepareStatement("SELECT id FROM hasaccounts WHERE username = ?");
+			stmt.setString(1, u.getUsername());
+			rs2 = stmt.executeQuery();
 			List<Integer> li = u.getAccountIds();
 			
 			while(rs2.next()){
@@ -79,6 +96,9 @@ public class UserToDatabase implements UserDao {
 		catch(Exception ex) {
 			ex.printStackTrace();
 		}
+		finally {
+			closeResources();
+		}
 		
 		return null;
 	}
@@ -88,15 +108,24 @@ public class UserToDatabase implements UserDao {
 			return;
 		}
 		
-		Connection c = DatabaseManager.getConnection();
-		Statement stmt = null;
+		c = DatabaseManager.getConnection();
 		
 		try {
-			stmt = c.createStatement();
-			stmt.executeUpdate(String.format("UPDATE users SET username = '%s', password = '%s', firstname = '%s', lastname = '%s', age = %d, admin = %b WHERE username = '%s';", u.getUsername(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getAge(), u.isAdmin(), u.getUsername()));
+			stmt = c.prepareStatement("UPDATE users SET username = ?, password = ?, firstname = ?, lastname = ?, age = ?, admin = ? WHERE username = ?;");
+			stmt.setString(1, u.getUsername());
+			stmt.setString(2, u.getPassword());
+			stmt.setString(3, u.getFirstName());
+			stmt.setString(4, u.getLastName());
+			stmt.setInt(5, u.getAge());
+			stmt.setBoolean(6, u.isAdmin());
+			stmt.setString(7, u.getUsername());
 			
 			for(int id : u.getAccountIds()) {
-				stmt.executeUpdate(String.format("INSERT INTO hasaccounts SELECT '%s', %d WHERE NOT EXISTS (SELECT id FROM hasaccounts WHERE id = %d);", u.getUsername(), id, id));
+				stmt = c.prepareStatement("INSERT INTO hasaccounts SELECT ?, ? WHERE NOT EXISTS (SELECT id FROM hasaccounts WHERE id = ?);");
+				stmt.setString(1, u.getUsername());
+				stmt.setInt(2, id);
+				stmt.setInt(3, id);
+				stmt.executeUpdate();
 			}
 		}
 		catch(SQLException ex) {
@@ -105,6 +134,10 @@ public class UserToDatabase implements UserDao {
 		catch(Exception ex) {
 			ex.printStackTrace();
 		}
+		finally {
+			closeResources();
+		}
+		
 	}
 	
 	public void deleteUser(User u) {
@@ -117,26 +150,26 @@ public class UserToDatabase implements UserDao {
 					return null;
 				}
 				
-				Connection c = DatabaseManager.getConnection();
-				Statement stmt = null;
-				Statement stmt2 = null;
+				c = DatabaseManager.getConnection();
 				ResultSet rs = null;
 				ResultSet rs2 = null;
 				User u = new User();
 				
 				try {
-					stmt = c.createStatement();
-					rs = stmt.executeQuery(String.format("SELECT * FROM users WHERE username = '%s';", username));
+					stmt = c.prepareStatement("SELECT * FROM users WHERE username = ?");
+					stmt.setString(1, username);
+					rs = stmt.executeQuery();
 					
 					while(rs.next()) {
 						u = new User(rs.getString("username"), rs.getString("password"), rs.getString("firstname"), rs.getString("lastname"), rs.getInt("age"), rs.getBoolean("admin"));
 					}
 					
-					stmt2 = c.createStatement();
 					if("default".equals(u.getUsername())) {
 						return null;
 					}
-					rs2 = stmt2.executeQuery(String.format("SELECT id FROM hasaccounts WHERE username = '%s'", u.getUsername()));
+					stmt = c.prepareStatement("SELECT id FROM hasaccounts WHERE username = ?");
+					stmt.setString(1, u.getUsername());
+					rs2 = stmt.executeQuery();
 					List<Integer> li = u.getAccountIds();
 					
 					while(rs2.next()){
@@ -153,8 +186,31 @@ public class UserToDatabase implements UserDao {
 				catch(Exception ex) {
 					ex.printStackTrace();
 				}
+				finally {
+					closeResources();
+				}
 				
 				return null;
 	}
+	
+	private void closeResources() {
+
+        try {
+            if (stmt != null) {
+            	stmt.close();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+        	if(c != null) {
+        		c.close();
+        	}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

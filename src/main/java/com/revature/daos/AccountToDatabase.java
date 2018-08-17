@@ -3,29 +3,33 @@ package com.revature.daos;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.List;
 
 import com.revature.beans.Account;
 import com.revature.utilities.DatabaseManager;
 
 public class AccountToDatabase implements AccountDao{
+	private Connection c = null;
+	private PreparedStatement stmt = null;
 	
 	public void createAccount(Account a) {
 		if (a == null) {
 			return;
 		}
 		
-		Connection c = DatabaseManager.getConnection();
-		Statement stmt = null;
-		Statement stmt2 = null;
+		c = DatabaseManager.getConnection();
 		
 		try {
-			stmt = c.createStatement();
-			stmt.executeUpdate(String.format("INSERT INTO accounts VALUES (%d, %d);", a.getId(), a.getBalance()));
-		
-			stmt2 = c.createStatement();
-			stmt2.executeUpdate(String.format("INSERT INTO hastransactionhistory VALUES (%d, '%s');", a.getId(), "Account Created"));
+			stmt = c.prepareStatement("INSERT INTO accounts VALUES (?, ?);");
+			stmt.setInt(1, a.getId());
+			stmt.setInt(2, a.getBalance());
+			stmt.executeUpdate();
+			
+			stmt = c.prepareStatement("INSERT INTO hastransactionhistory VALUES (?, ?);");
+			stmt.setInt(1, a.getId());
+			stmt.setString(2, "Account Created");
+			stmt.executeUpdate();
 		}
 		catch(SQLException ex) {
 			System.out.println(ex.getMessage());
@@ -33,27 +37,31 @@ public class AccountToDatabase implements AccountDao{
 		catch(Exception ex) {
 			ex.printStackTrace();
 		}
+		finally {
+			closeResources();
+		}
+		
 	}
 	
 	public Account findByAccountId(int accountId) {
 				
-				Connection c = DatabaseManager.getConnection();
-				Statement stmt = null;
-				Statement stmt2 = null;
+				c = DatabaseManager.getConnection();
 				ResultSet rs = null;
 				ResultSet rs2 = null;
 				Account a = new Account();
 				
 				try {
-					stmt = c.createStatement();
-					rs = stmt.executeQuery(String.format("SELECT * FROM accounts WHERE id = %d", accountId));
+					stmt = c.prepareStatement("SELECT * FROM accounts WHERE id = ?");
+					stmt.setInt(1, accountId);
+					rs = stmt.executeQuery();
 					
 					while(rs.next()) {
 						a = new Account(rs.getInt("id"), rs.getInt("balance"));
 					}
 					
-					stmt2 = c.createStatement();
-					rs2 = stmt2.executeQuery(String.format("SELECT history_part FROM hastransactionhistory WHERE id = %d", a.getId()));
+					stmt = c.prepareStatement("SELECT history_part FROM hastransactionhistory WHERE id = ?");
+					stmt.setInt(1, accountId);
+					rs2 = stmt.executeQuery();
 					List<String> li = a.getTransactHistory();
 					
 					while(rs2.next()){
@@ -61,9 +69,7 @@ public class AccountToDatabase implements AccountDao{
 					}
 					
 					a.setTransactHistory(li);
-					
-//					System.out.println(a);
-					
+										
 					return a;
 				}
 				catch(SQLException ex) {
@@ -71,6 +77,9 @@ public class AccountToDatabase implements AccountDao{
 				}
 				catch(Exception ex) {
 					ex.printStackTrace();
+				}
+				finally {
+					closeResources();
 				}
 		
 		return null;
@@ -81,15 +90,21 @@ public class AccountToDatabase implements AccountDao{
 			return;
 		}
 		
-		Connection c = DatabaseManager.getConnection();
-		Statement stmt = null;
+		c = DatabaseManager.getConnection();
 		
 		try {
-			stmt = c.createStatement();
-			stmt.executeUpdate(String.format("UPDATE accounts SET id = %d, balance = %d WHERE id = %d;", a.getId(), a.getBalance(), a.getId()));
+			stmt = c.prepareStatement("UPDATE accounts SET id = ?, balance = ? WHERE id = ?;");
+			stmt.setInt(1, a.getId());
+			stmt.setInt(2, a.getBalance());
+			stmt.setInt(3, a.getId());
+			stmt.executeUpdate();
 		
 			for(String part : a.getTransactHistory()) {
-				stmt.executeUpdate(String.format("INSERT INTO hastransactionhistory SELECT %d, '%s' WHERE NOT EXISTS (SELECT history_part FROM hastransactionhistory WHERE history_part = '%s');", a.getId(), part, part));
+				stmt = c.prepareStatement("INSERT INTO hastransactionhistory SELECT ?, ? WHERE NOT EXISTS (SELECT history_part FROM hastransactionhistory WHERE history_part = ?);");
+				stmt.setInt(1, a.getId());
+				stmt.setString(2, part);
+				stmt.setString(3, part);
+				stmt.executeUpdate();
 			}
 		}
 		catch(SQLException ex) {
@@ -98,18 +113,22 @@ public class AccountToDatabase implements AccountDao{
 		catch(Exception ex) {
 			ex.printStackTrace();
 		}
+		finally {
+			closeResources();
+		}
+		
 	}
 	public void deleteAccount(Account a) {
 		if (a == null) {
 			return;
 		}
 		
-		Connection c = DatabaseManager.getConnection();
-		Statement stmt = null;
+		c = DatabaseManager.getConnection();
 		
 		try {
-			stmt = c.createStatement();
-			stmt.executeUpdate(String.format("DELETE FROM accounts WHERE id = %d;", a.getId()));
+			stmt = c.prepareStatement("DELETE FROM accounts WHERE id = ?;");
+			stmt.setInt(1, a.getId());
+			stmt.executeUpdate();
 		}
 		catch(SQLException ex) {
 			System.out.println(ex.getMessage());
@@ -117,5 +136,29 @@ public class AccountToDatabase implements AccountDao{
 		catch(Exception ex) {
 			ex.printStackTrace();
 		}
+		finally {
+			closeResources();
+		}
+		
 	}
+	
+	private void closeResources() {
+
+        try {
+            if (stmt != null) {
+            	stmt.close();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+        	if(c != null) {
+        		c.close();
+        	}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

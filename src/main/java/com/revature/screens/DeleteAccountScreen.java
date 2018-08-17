@@ -16,6 +16,7 @@ public class DeleteAccountScreen implements Screen{
 		User user = ud.findByUsernameAndPassword(CurrentUser.username, CurrentUser.password);
 		
 		while(true) {
+		System.out.println();
 		System.out.println("Big Bank Account Deletion");
 		System.out.println("--------------------------");
 		System.out.print("Accounts: ");

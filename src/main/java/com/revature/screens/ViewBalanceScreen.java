@@ -15,6 +15,7 @@ public class ViewBalanceScreen implements Screen{
 	public Screen start() {
 		User user = ud.findByUsernameAndPassword(CurrentUser.username, CurrentUser.password);
 		
+		System.out.println();
 		System.out.println("Big Bank Balance");
 		System.out.println("-------------------");
 		

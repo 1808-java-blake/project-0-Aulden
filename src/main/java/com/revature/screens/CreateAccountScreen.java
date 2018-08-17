@@ -17,6 +17,7 @@ public class CreateAccountScreen implements Screen{
 		User user = ud.findByUsernameAndPassword(CurrentUser.username, CurrentUser.password);
 		
 		while(true) {
+		System.out.println();
 		System.out.println("Big Bank Account Creation");
 		System.out.println("--------------------------");
 		System.out.print("Accounts: ");

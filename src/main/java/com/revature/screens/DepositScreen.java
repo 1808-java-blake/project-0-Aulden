@@ -17,6 +17,7 @@ public class DepositScreen implements Screen{
 	public Screen start() {
 		
 		while(true) {
+		System.out.println();
 		System.out.println("Big Bank Deposit");
 		System.out.println("-----------------");
 		System.out.print("Account IDs: ");

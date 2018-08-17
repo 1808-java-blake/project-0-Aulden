@@ -17,6 +17,7 @@ public class WithdrawalScreen implements Screen{
 	public Screen start() {
 		
 		while(true) {
+		System.out.println();
 		System.out.println("Big Bank Withdrawal");
 		System.out.println("-----------------");
 		System.out.print("Account IDs: ");
